@@ -1,0 +1,19 @@
+[project]
+name = "semaphore-tests"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "playwright>=1.59.0",
+    "pytest>=9.0.3",
+    "pytest-playwright>=0.7.2",
+]
+
+[tool.pytest.ini_options]
+markers = [
+    "clean_db: test requires a fresh database (sequential only)",
+    "seeded: test requires pre-populated data (sequential within seed group)",
+    "parallel: test is safe for concurrent execution",
+    "clean_browser: clear cookies and browser state before test",
+]

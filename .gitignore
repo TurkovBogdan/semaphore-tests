@@ -1,0 +1,25 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# IDE
+.idea/
+
+# Test runtime data
+.testdata/
+
+# Vendor (Go toolchain, built binaries)
+vendor/
+
+# Environment (use .env.example as template)
+.env
+
+# semaphore source
+semaphore/
