@@ -1,6 +1,6 @@
 ## About the project
 
-E2E test suite for the Semaphore UI web application. Tests run against a real Semaphore server (Go backend + Vue 2 frontend) built from source in `semaphore/`. Uses Playwright for browser automation and pytest as the test runner. Database: SQLite (file-based, no external server).
+E2E test suite for the Semaphore UI web application. Tests run against a real Semaphore server (Go backend + Vue 2 frontend) built from source in `semaphore/`. Uses Playwright for browser automation and pytest as the test runner. Database: SQLite (file-based, no external server). Agent has tools for DB inspection (`tool_db.py`) and an HTTP client for seeding data via API (`src/seeds/api.py`).
 
 ## Structure
 
@@ -16,7 +16,12 @@ src/                    — Python utilities
   seeds/                — DB seed functions for @seeded tests (via Semaphore API)
     api.py              — SemaphoreAPI client for seeds
 tool_db.py              — DB inspector (uv run tool_db.py <command>)
-scripts/                — user-facing shell scripts (build, test, serve + platform wrappers in mac/, linux/)
+scripts/                — user-facing shell scripts (auto-detect OS inside)
+  setup.sh              — one-time: uv, deps, Playwright (+system deps on Linux)
+  build.sh              — compile Go binary + Vue frontend, reset DB
+  test.sh               — load .env, run pytest --headed
+  serve.sh              — start server + open browser, stop on Ctrl+C
+  kill.sh               — kill all Semaphore processes
 semaphore/              — Semaphore source code (Go + Vue 2), not our code
 vendor/                 — Go toolchain, compiled binary (gitignored)
 .testdata/              — runtime: SQLite DB, config, tmp (gitignored)
@@ -88,7 +93,8 @@ Rules:
 - Each test must fully own its preconditions: log in fresh, navigate explicitly, don't assume anything left over from a previous test. The browser context is shared across the session — always treat it as potentially dirty.
 - **One test per scenario.** A scenario is a complete user action with a single expected outcome. Verify everything about that outcome in the same test — don't split element-level checks into separate tests.
 - One file per feature area in `tests/`
-- **Never match by visible text** — the UI is multilingual, labels and button names change with locale. Use `data-testid` attributes, element IDs, `name`/`type`/`role` attributes, or stable CSS classes (e.g. Vuetify `button.success`). If a needed element has no `data-testid`, add one in `semaphore/` source rather than matching by text
+- **Never edit `semaphore/` source code** — it's an external project, we only build and run it. Never modify its files for any reason.
+- **Never match by visible text** — the UI is multilingual, labels and button names change with locale. Use `data-testid` attributes, element IDs, `name`/`type`/`role` attributes, or stable CSS classes (e.g. Vuetify `button.primary`). If a needed element has no `data-testid`, use other stable selectors (class, role, type, position)
 - **All selectors live in `src/pages/`** — one file per page/interface (e.g. `login.py`, `sidebar.py`, `dashboard.py`). Tests and helpers import selectors from there. When a `data-testid` changes, update one file
 - For SPA navigation after actions, use `page.wait_for_url(lambda url: ..., timeout=N)` — glob patterns don't work reliably with Vue router
 - Session helpers: `src/session.py` — `login()`, `logout()`, `clear_session()`

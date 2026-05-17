@@ -159,3 +159,8 @@ class SemaphoreAPI:
         r = self.session.get(self._project_url(project_id, "views"))
         r.raise_for_status()
         return r.json()
+
+    def list_schedules(self, project_id: int) -> list[dict]:
+        r = self.session.get(self._project_url(project_id, "schedules"))
+        r.raise_for_status()
+        return r.json()

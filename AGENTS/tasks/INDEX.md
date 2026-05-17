@@ -24,6 +24,7 @@ Tasks the user has confirmed as complete.
 |------|------|-------------|
 | [2026-05-17-project-setup.md](2026-05-17-project-setup.md) | 2026-05-17 | uv init, Python 3.14, pytest + playwright |
 | [2026-05-18-test-infrastructure.md](2026-05-18-test-infrastructure.md) | 2026-05-18 | Build/test scripts, tools, fixtures, markers, first auth tests, SQLite, headed browser |
+| [2026-05-18-project-settings.md](2026-05-18-project-settings.md) | 2026-05-18 | empty_project seed, settings page test, serve.sh --seed option |
 
 ## Deferred
 

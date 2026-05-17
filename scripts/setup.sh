@@ -1,18 +1,15 @@
 #!/usr/bin/env bash
 #
-# Install macOS dependencies and run the test suite.
-# Usage:  ./scripts/mac/test.sh [pytest args...]
-#
-# Installs uv, Python dependencies, and Playwright browsers if missing.
-# All arguments are forwarded to scripts/test.sh (and then to pytest).
+# One-time setup: install uv, Python deps, Playwright browsers (+ system deps on Linux).
+# Usage:  ./scripts/setup.sh
 
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
+ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+OS="$(uname -s)"
 
 info()  { printf '\033[1;34m→ %s\033[0m\n' "$*"; }
 ok()    { printf '\033[1;32m✓ %s\033[0m\n' "$*"; }
-fail()  { printf '\033[1;31m✗ %s\033[0m\n' "$*" >&2; exit 1; }
 
 # ─── install uv ─────────────────────────────────────────────────────────────
 
@@ -33,10 +30,13 @@ ok "Dependencies synced"
 
 # ─── install Playwright browsers ────────────────────────────────────────────
 
-info "Ensuring Playwright browsers are installed..."
-(cd "$ROOT_DIR" && uv run playwright install chromium 2>&1 | tail -1)
-ok "Playwright browsers ready"
+info "Installing Playwright browsers..."
+if [[ "$OS" == "Linux" ]]; then
+    (cd "$ROOT_DIR" && uv run playwright install --with-deps chromium)
+else
+    (cd "$ROOT_DIR" && uv run playwright install chromium)
+fi
+ok "Playwright ready"
 
-# ─── run tests ──────────────────────────────────────────────────────────────
-
-exec "$ROOT_DIR/scripts/test.sh" "$@"
+echo ""
+ok "Setup complete. Run tests with: ./scripts/test.sh"

@@ -1,6 +1,4 @@
 NEW_PROJECT_NAME = "[data-testid='newProject-name']"
-NEW_PROJECT_TELEGRAM_CHAT_ID = "[data-testid='newProject-tg']"
-NEW_PROJECT_ALERT_TOGGLE = "[data-testid='newProject-alert']"
 NEW_PROJECT_CREATE_DEMO = "button.success"
 NEW_PROJECT_CREATE = "main button.primary"
 NEW_PROJECT_NAV_NEW = "a[href='/project/new']"

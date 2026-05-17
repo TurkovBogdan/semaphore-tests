@@ -43,3 +43,11 @@ Updated every time tests are added, removed, or renamed.
 | Test | Verifies |
 |------|----------|
 | `test_create_demo_project` | Demo project created with dashboard, sidebar, templates, inventory, keys, repositories |
+
+## tests/test_03_project_settings.py
+
+### TestProjectRename `@seeded(seed="empty_project")`
+
+| Test | Verifies |
+|------|----------|
+| `test_rename_project_and_rename_back` | Project renamed via settings, sidebar reflects change, rename reverts correctly |

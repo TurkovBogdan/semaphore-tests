@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
+#
+# Kill all running Semaphore test server processes.
+# Usage:  ./scripts/kill.sh
+
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-BIN="$PROJECT_ROOT/vendor/semaphore"
+ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+BIN="$ROOT_DIR/vendor/semaphore"
 
 pids=$(pgrep -f "$BIN" 2>/dev/null || true)
 

@@ -2,7 +2,7 @@ import pytest
 from playwright.sync_api import Page, expect
 
 from src.config import DEFAULT_PROJECT_NAME, DEFAULT_DEMO_PROJECT_NAME
-from src.pages import new_project, sidebar, dashboard
+from src.pages import TABLE_ROWS, new_project, sidebar, dashboard
 from src.session import login
 
 
@@ -63,24 +63,24 @@ class TestCreateDemoProject:
 
         page.locator(sidebar.SIDEBAR_TEMPLATES).click()
         page.wait_for_url(lambda url: "/templates" in url, timeout=5000)
-        rows = page.locator("table tbody tr")
+        rows = page.locator(TABLE_ROWS)
         expect(rows.first).to_be_visible()
         assert rows.count() > 2
 
         page.locator(sidebar.SIDEBAR_INVENTORY).click()
         page.wait_for_url(lambda url: "/inventory" in url, timeout=5000)
-        rows = page.locator("table tbody tr")
+        rows = page.locator(TABLE_ROWS)
         expect(rows.first).to_be_visible()
         assert rows.count() > 2
 
         page.locator(sidebar.SIDEBAR_KEYS).click()
         page.wait_for_url(lambda url: "/keys" in url, timeout=5000)
-        rows = page.locator("table tbody tr")
+        rows = page.locator(TABLE_ROWS)
         expect(rows.first).to_be_visible()
         assert rows.count() >= 1
 
         page.locator(sidebar.SIDEBAR_REPOSITORIES).click()
         page.wait_for_url(lambda url: "/repositories" in url, timeout=5000)
-        rows = page.locator("table tbody tr")
+        rows = page.locator(TABLE_ROWS)
         expect(rows.first).to_be_visible()
         assert rows.count() >= 1

@@ -1,7 +1,5 @@
 SIDEBAR_CURRENT_PROJECT = "[data-testid='sidebar-currentProject']"
-SIDEBAR_DASHBOARD = "[data-testid='sidebar-dashboard']"
 SIDEBAR_TEMPLATES = "[data-testid='sidebar-templates']"
-SIDEBAR_SCHEDULE = "[data-testid='sidebar-schedule']"
 SIDEBAR_INVENTORY = "[data-testid='sidebar-inventory']"
 SIDEBAR_ENVIRONMENT = "[data-testid='sidebar-environment']"
 SIDEBAR_KEYS = "[data-testid='sidebar-keys']"

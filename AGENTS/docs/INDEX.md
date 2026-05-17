@@ -1,6 +1,6 @@
-# {{Project name}} — documentation
+# semaphore-tests — documentation
 
-{{Short description: what it does, what it runs on, where it stores data.}}
+E2E test suite for Semaphore UI. Playwright + pytest, SQLite, real server from source.
 
 ## Rules
 
@@ -9,10 +9,4 @@
 
 ## Inventory
 
-### [file.md](AGENTS/docs/file.md) — title
-
-One line: why read this file.
-
-- key point 1
-- key point 2
-- key point 3
+No docs yet. Reference information lives in `CLAUDE.md` and `README.md` for now.
