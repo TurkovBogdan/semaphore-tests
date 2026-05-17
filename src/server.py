@@ -27,6 +27,12 @@ class SemaphoreServer:
         if self.is_running():
             return
 
+        if not SEMAPHORE_BIN.exists():
+            raise FileNotFoundError(
+                f"Semaphore binary not found at {SEMAPHORE_BIN}\n"
+                f"Run ./scripts/build.sh to compile it from source."
+            )
+
         if not self.config_path.exists():
             write_config(port=self.port)
 

@@ -96,7 +96,13 @@ ok "Frontend built"
 # ─── build backend ─────────────────────────────────────────────────────────
 
 info "Building Go binary..."
-(cd "$SEMAPHORE_DIR" && go build -o "$VENDOR_DIR/semaphore" .)
+if [[ -f "$SEMAPHORE_DIR/main.go" ]]; then
+    (cd "$SEMAPHORE_DIR" && go build -o "$VENDOR_DIR/semaphore" .)
+elif [[ -f "$SEMAPHORE_DIR/cli/main.go" ]]; then
+    (cd "$SEMAPHORE_DIR" && go build -o "$VENDOR_DIR/semaphore" ./cli)
+else
+    fail "Cannot find Go entry point (main.go) in $SEMAPHORE_DIR"
+fi
 ok "Binary at $VENDOR_DIR/semaphore"
 
 # ─── reset database ────────────────────────────────────────────────────────
