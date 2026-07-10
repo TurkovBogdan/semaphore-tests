@@ -28,6 +28,13 @@ fi
 
 GO_VERSION="${GO_VERSION:-1.24}"
 
+# Normalize to a full version string (major.minor -> major.minor.0) for the download URL.
+if [[ "$GO_VERSION" =~ ^[0-9]+\.[0-9]+$ ]]; then
+    GO_FULL="${GO_VERSION}.0"
+else
+    GO_FULL="$GO_VERSION"
+fi
+
 # ─── install platform dependencies ─────────────────────────────────────────
 
 install_deps() {
@@ -68,20 +75,20 @@ install_deps
 GO_DIR="$VENDOR_DIR/go"
 GO_BIN="$GO_DIR/bin/go"
 
-if [[ -x "$GO_BIN" ]] && "$GO_BIN" version 2>/dev/null | grep -q "go${GO_VERSION}"; then
-    ok "Go $GO_VERSION already installed"
+if [[ -x "$GO_BIN" ]] && "$GO_BIN" version 2>/dev/null | grep -q "go${GO_FULL}"; then
+    ok "Go $GO_FULL already installed"
 else
-    info "Downloading Go $GO_VERSION..."
+    info "Downloading Go $GO_FULL..."
     OS_LOWER=$(uname -s | tr '[:upper:]' '[:lower:]')
     ARCH=$(uname -m)
     case "$ARCH" in
         x86_64)  ARCH="amd64" ;;
         aarch64|arm64) ARCH="arm64" ;;
     esac
-    GO_URL="https://go.dev/dl/go${GO_VERSION}.0.${OS_LOWER}-${ARCH}.tar.gz"
+    GO_URL="https://go.dev/dl/go${GO_FULL}.${OS_LOWER}-${ARCH}.tar.gz"
     mkdir -p "$VENDOR_DIR"
     curl -sSL "$GO_URL" | tar -xz -C "$VENDOR_DIR"
-    ok "Go $GO_VERSION installed"
+    ok "Go $GO_FULL installed"
 fi
 
 export PATH="$GO_DIR/bin:$PATH"
