@@ -51,3 +51,29 @@ Updated every time tests are added, removed, or renamed.
 | Test | Verifies |
 |------|----------|
 | `test_rename_project_and_rename_back` | Project renamed via settings, sidebar reflects change, rename reverts correctly |
+
+## tests/test_04_inventory.py
+
+### TestInventoryModal `@seeded(seed="inventory_project")`
+
+| Test | Verifies |
+|------|----------|
+| `test_new_inventory_modal_opens_and_closes` | "New Inventory" menu opens the edit dialog; close button dismisses it |
+
+### TestCreateInventory `@seeded(seed="inventory_project")`
+
+| Test | Verifies |
+|------|----------|
+| `test_create_file_inventory` | File inventory created via modal appears in table and persists via API |
+
+### TestEditInventory `@seeded(seed="inventory_project")`
+
+| Test | Verifies |
+|------|----------|
+| `test_edit_inventory_name` | Edit modal pre-fills name; renamed inventory updates table and API |
+
+### TestDeleteInventory `@seeded(seed="inventory_project")`
+
+| Test | Verifies |
+|------|----------|
+| `test_delete_inventory_via_confirm_dialog` | Delete confirmation dialog removes the inventory from table and API |

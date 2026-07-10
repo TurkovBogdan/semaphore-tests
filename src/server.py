@@ -44,6 +44,17 @@ class SemaphoreServer:
 
         deadline = time.monotonic() + timeout
         while time.monotonic() < deadline:
+            # If our process already exited (e.g. the port is held by an orphan
+            # server), fail loudly instead of pinging the stranger and silently
+            # serving its stale data.
+            if self.process.poll() is not None:
+                code = self.process.returncode
+                output = self.process.stdout.read().decode(errors="replace") if self.process.stdout else ""
+                self.process = None
+                raise RuntimeError(
+                    f"Semaphore exited during startup (code {code}). "
+                    f"Port {self.port} may be held by another process.\n{output}"
+                )
             try:
                 resp = requests.get(f"{self.base_url}/api/ping", timeout=1)
                 if resp.status_code == 200:

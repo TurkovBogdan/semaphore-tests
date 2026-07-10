@@ -14,11 +14,23 @@ from src.config import (
 )
 
 
+def _remove_db_files() -> None:
+    """Delete the SQLite database and its WAL/SHM sidecars.
+
+    Removing only ``database.sqlite`` while leaving a stale ``-wal`` behind lets the
+    next migrate replay old committed transactions (resurrecting data / corrupting the
+    file). Always wipe all three so a reset yields a truly clean database.
+    """
+    for suffix in ("", "-wal", "-shm", "-journal"):
+        path = DB_PATH.with_name(DB_PATH.name + suffix)
+        if path.exists():
+            path.unlink()
+
+
 def reset_database(config_path: Path | None = None) -> None:
     config_path = config_path or CONFIG_PATH
 
-    if DB_PATH.exists():
-        DB_PATH.unlink()
+    _remove_db_files()
 
     if not config_path.exists():
         write_config()
@@ -60,8 +72,7 @@ def _create_admin_user(
 
 
 def clean_data() -> None:
-    if DB_PATH.exists():
-        DB_PATH.unlink()
+    _remove_db_files()
     if TMP_PATH.exists():
         import shutil
         shutil.rmtree(TMP_PATH, ignore_errors=True)
